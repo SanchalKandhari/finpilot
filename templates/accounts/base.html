@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}FinPilot Auth{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'accounts/auth.css' %}" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <aside class="brand-panel">
+        <div class="brand-mark">FP</div>
+        <p class="eyebrow">FinPilot</p>
+        <h1>Smarter investing starts with a secure account.</h1>
+        <p class="lead">
+          Sign up to access your calculator dashboard, paper trading space, and risk simulation features.
+        </p>
+        <div class="feature-list">
+          <div>Compound return calculator</div>
+          <div>Paper trading with virtual capital</div>
+          <div>Risk simulation and investment education</div>
+        </div>
+      </aside>
+
+      <main class="content-panel">
+        <header class="topbar">
+          <a href="{% url 'dashboard' %}" class="brand-link">FinPilot</a>
+          <nav class="topnav">
+            {% if request.user.is_authenticated %}
+              <span class="welcome">Hi, {{ request.user.username }}</span>
+              <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="ghost-button">Logout</button>
+              </form>
+            {% else %}
+              <a href="{% url 'login' %}" class="ghost-button">Login</a>
+              <a href="{% url 'signup' %}" class="solid-button">Sign Up</a>
+            {% endif %}
+          </nav>
+        </header>
+
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </body>
+  </html>

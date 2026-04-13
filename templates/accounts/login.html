@@ -1,0 +1,32 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}Login | FinPilot{% endblock %}
+
+{% block content %}
+<section class="auth-card">
+  <p class="eyebrow">Login</p>
+  <h2>Welcome back</h2>
+  <p class="lead small">Use your username and password to access your investment dashboard.</p>
+
+  <form method="post" class="auth-form">
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="field-group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}
+          <div class="error-text">{{ field.errors|join:", " }}</div>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    {% if form.non_field_errors %}
+      <div class="error-banner">{{ form.non_field_errors|join:", " }}</div>
+    {% endif %}
+
+    <button type="submit" class="solid-button submit-button">Login</button>
+  </form>
+
+  <p class="switch-copy">New here? <a href="{% url 'signup' %}">Create an account</a></p>
+</section>
+{% endblock %}
